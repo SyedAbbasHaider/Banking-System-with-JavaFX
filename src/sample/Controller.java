@@ -6,7 +6,8 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
 
 public class Controller {
 
@@ -91,7 +92,7 @@ public class Controller {
     }
 
     @FXML
-    void importTextFile(ActionEvent event) {
+    void importTextFile(ActionEvent event) throws IOException {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Open Source File for the Import");
         chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"),
@@ -100,19 +101,86 @@ public class Controller {
         File sourceFile = chooser.showOpenDialog(stage); //get the reference of the source file
         //write code to read from the file.
         //run a loop through the readable file, and then send a row to the addAccount method.
+        BufferedReader br = new BufferedReader(new FileReader(sourceFile));
+        String line;
+        try {
+            if (br.readLine() == null) {
+                textArea_AD.appendText("File is Empty \n");
+            }
+            while ((line = br.readLine()) != null) {
+                String[] token = line.split(",");
+                switch (token[0]) {
+                    case "C":
+                        try {
+                            Profile person = new Profile(token[1], token[2]);
+                            double balance = Double.parseDouble(token[3]);
+                            String date = token[4];
+                            Date d = new Date(date);
+                            boolean val = Boolean.parseBoolean(token[5]);
+                            Account acc = new Checking(person, balance, d, val);
+                            ad.add(acc);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("Invalid Command entered !");
+                            break;
+                        }
+                    case "S":
+                        try {
+                            Profile person = new Profile(token[1], token[2]);
+                            double balance = Double.parseDouble(token[3]);
+                            String date = token[4];
+                            Date d = new Date(date);
+                            boolean val = Boolean.parseBoolean(token[5]);
+                            Account acc = new Savings(person, balance, d, val);
+                            ad.add(acc);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("Invalid Command entered !");
+                            break;
+                        }
+                    case "M":
+                        try {
+                            Profile person = new Profile(token[1], token[2]);
+                            double balance = Double.parseDouble(token[3]);
+                            String date = token[4];
+                            Date d = new Date(date);
+                            Account acc = new MoneyMarket(person, balance, d);
+                            ad.add(acc);
+                            break;
+                        } catch (Exception e) {
+                            System.out.println("Invalid Command entered !");
+                            break;
+                        }
+                }
+                textArea_AD.appendText(ad.printAccounts() + "\n");
+            }
 
+        } catch (IOException e) {
+            textArea_AD.appendText("Invalid, Error occurs \n");
+        }
     }
 
 
     @FXML
-    void exportTextFile(ActionEvent event) {
+    void exportTextFile(ActionEvent event) throws IOException {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Open Target File for the Export");
         chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         Stage stage = new Stage();
-        File targeFile = chooser.showSaveDialog(stage); //get the reference of the target file
+        File targetFile = chooser.showSaveDialog(stage); //get the reference of the target file
         //write code to write to the file.
+        BufferedWriter bw = new BufferedWriter(new FileWriter(targetFile));
+        try{
+            String[] result = ad.tester();
+            for (int i = 0; i < result.length; i++) {
+                bw.write(result[i] + "\n");
+            }
+            bw.close();
+
+        }catch (Exception e){
+            textArea_AD.appendText("Invalid, Error occurs \n");
+        }
 
     }
 

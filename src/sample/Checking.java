@@ -1,11 +1,14 @@
 package sample;
 
+import java.text.DecimalFormat;
+
 public class Checking extends Account {
     private boolean directDeposit;
 
     public Checking(Profile holder, double balance, Date dateOpen, boolean directDeposit) {
         super(holder, balance, dateOpen);
-        //directDeposit = this.directDeposit;
+        // this refers to the current object in the method which is why it would be on
+        // the left side
         this.directDeposit = directDeposit;
     }
 
@@ -24,9 +27,17 @@ public class Checking extends Account {
 
     public double monthlyFee() {
         try {
-            if (this.getBalance() < 1500) {
-                double newBalance = this.getBalance() - 25;
-                return newBalance;
+            if (getDirectDeposit() == true) {
+                return 0.0;
+            } else if (getDirectDeposit() == false) {
+                if (this.getBalance() < 1500) {
+                    double newBalance = this.getBalance() - 25;
+                    return newBalance;
+                }
+                if (directDeposit) {
+                    return 0;
+                }
+
             }
 
         } catch (Exception e) {
@@ -53,17 +64,25 @@ public class Checking extends Account {
 
         String result = "";
         String s1 = "";
+        String pattern = "###,###.##";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
 
         if (getDirectDeposit() == true) {
             s1 = String.valueOf(getDirectDeposit());
-            s1 = "*direct deposit account*";
-            result = super.toString() + " " + s1;
+            s1 = "direct deposit account";
+            // result = super.toString() + " " + s1;
+            result = "Checking" + getHolder().getfName() + " " + getHolder().getlName() + "*" + " $"
+                    + decimalFormat.format(getBalance()) + "*" + getDateOpen() + s1;
+            return result;
 
         } else if (getDirectDeposit() == false) {
-            result = super.toString();
+            // result = super.toString();
+            result = "Checking" + getHolder().getfName() + " " + getHolder().getlName() + "*" + " $"
+                    + decimalFormat.format(getBalance()) + "*" + getDateOpen();
+
         }
         // result = super.toString() + " " + s1;
         return result;
-    }
 
+    }
 }

@@ -1,47 +1,29 @@
 package sample;
 
-/*
-this is account type of savings
-@author Syed Abbas Haider, Syed Fazeel Haider
- */
+import java.text.DecimalFormat;
+
 public class Savings extends Account {
 
-    /*
-    flag
-     */
     private boolean isLoyal;
 
-    /*
-    parameterized constructor
-    @param holder
-    @param balance
-    @param dateOpened
-    @param isLoyal
-     */
     public Savings(Profile holder, Double balance, Date dateOpened, boolean isLoyal) {
         super(holder, balance, dateOpened);
+        this.isLoyal = isLoyal;
 
     }
 
-    /*
-    @param holder
-     */
+    public boolean getisLoyal() {
+        return isLoyal;
+    }
+
     public Savings(Profile holder) {
         super(holder);
     }
 
-    /*
-    @param holder
-    @param balance
-     */
     public Savings(Profile holder, double balance) {
         super(holder, balance);
     }
 
-    /*
-    calculate monthly interest
-    @return updated balance
-     */
     public double monthlyInterest() {
         try {
             return (this.getBalance() * 0.02) / 100;
@@ -52,10 +34,6 @@ public class Savings extends Account {
         return 0;
     }
 
-    /*
-    calculate monthly fee
-    @return updated balance
-     */
     public double monthlyFee() {
         try {
             if (this.getBalance() < 300) {
@@ -65,5 +43,31 @@ public class Savings extends Account {
             System.out.println("Number Format Exception");
         }
         return 0;
+    }
+    @Override
+    public String toString() {
+
+        String result = "";
+        String s1 = "";
+        String pattern = "###,###.##";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+
+        if (getisLoyal() == true) {
+            s1 = String.valueOf(getisLoyal());
+            s1 = "special Savings account";
+            // result = super.toString() + " " + s1;
+            result = "Savings" + getHolder().getfName() + " " + getHolder().getlName() + "*" + " $"
+                    + decimalFormat.format(getBalance()) + "*" + getDateOpen() + s1;
+            return result;
+
+        } else if (getisLoyal() == false) {
+            // result = super.toString();
+            result = "Savings" + getHolder().getfName() + " " + getHolder().getlName() + "*" + " $"
+                    + decimalFormat.format(getBalance()) + "*" + getDateOpen();
+
+        }
+        // result = super.toString() + " " + s1;
+        return result;
+
     }
 }

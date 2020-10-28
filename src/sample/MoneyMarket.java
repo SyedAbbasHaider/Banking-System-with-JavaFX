@@ -1,42 +1,28 @@
 package sample;
 
-/*
-this is money market class for another account type
-@author Syed Abbas Haider, Syed Fazeel Haider
- */
+import java.text.DecimalFormat;
+
 public class MoneyMarket extends Account {
     private int withdrawals;
 
-    /*
-    parameterized constructors
-    @param holder
-    @param balance
-    @param dateOpen
-     */
     public MoneyMarket(Profile holder, Double balance, Date dateOpen) {
         super(holder, balance, dateOpen);
-        this.withdrawals = 0;
+        // this.withdrawals = 0;
     }
 
-    /*
-    @param holder
-     */
     public MoneyMarket(Profile holder) {
         super(holder);
     }
 
-    /*
-    @param holder
-    @param balance
-     */
     public MoneyMarket(Profile holder, double balance) {
         super(holder, balance);
     }
 
-    /*
-    calculate monthly fee
-    @return updated balance
-     */
+    // public void getwithcount(){
+    // AccountDatabase obj = new AccountDatabase();
+    // obj.withdrawal(Profile holder, amount)
+    // }
+
     public double monthlyFee() {
         try {
             if (this.getBalance() < 2500) {
@@ -51,10 +37,6 @@ public class MoneyMarket extends Account {
 
     }
 
-    /*
-    calculate monthly interset
-    @return updated balance
-     */
     public double monthlyInterest() {
 
         try {
@@ -63,6 +45,19 @@ public class MoneyMarket extends Account {
             System.out.println("Number Format Exception");
         }
         return 0;
+
+    }
+    @Override
+    public String toString() {
+        String pattern = "###,###.##";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        String result = "";
+        String s1 = "";
+        s1 = "*# of withdrawls *";
+        // result = super.toString() + " " + s1;
+        result = "Money Market" + getHolder().getfName() + " " + getHolder().getlName() + "*" + " $"
+                + decimalFormat.format(getBalance()) + "*" + getDateOpen() + s1;
+        return result;
 
     }
 }

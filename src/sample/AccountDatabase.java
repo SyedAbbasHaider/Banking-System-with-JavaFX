@@ -291,32 +291,54 @@ public class AccountDatabase {
     /*
     print all accounts
      */
+
+
     public String printAccounts() {
         int i = 0;
-        //System.out.println("--Listing accounts in the database--");
-        String result = null;
+        String str = " ";
         for (i = 0; i < size; i++) {
+
             if (accounts[i] instanceof Checking) {
-                result =
-                        "*Checking*" + accounts[i].getHolder().getfName() + " " + accounts[i].getHolder().getlName()
-                                + "*" + " $" + accounts[i].getBalance() + "*" + " " + accounts[i].getDateOpen();
-                    //add return statements inside all if statements
+                str = accounts[i].toString();
             }
 
             if (accounts[i] instanceof Savings) {
-                result =
-                        "*Savings*" + accounts[i].getHolder().getfName() + " " + accounts[i].getHolder().getlName()
-                                + "*" + " $" + accounts[i].getBalance() + "*" + " " + accounts[i].getDateOpen();
+//                System.out.println(accounts[i].toString());
+                str = accounts[i].toString();
             }
             if (accounts[i] instanceof MoneyMarket) {
-                result = "*Money Market*" + accounts[i].getHolder().getfName() + " "
-                        + accounts[i].getHolder().getlName() + "*" + " $" + accounts[i].getBalance() + "*" + " "
-                        + accounts[i].getDateOpen() + "*" + "" + "*";
+//                System.out.println(accounts[i].toString());
+                str = accounts[i].toString();
+            }
+        }
+        return str;
+    }
+
+
+    public String[] tester() {
+        String[] result = new String[size];
+        int i = 0;
+        for (i = 0; i < size; i++) {
+
+            if (accounts[i] instanceof Checking) {
+                result[i] = accounts[i].toString();
             }
 
+            if (accounts[i] instanceof Savings) {
+//                System.out.println(accounts[i].toString());
+                result[i] = accounts[i].toString();
+            }
+            if (accounts[i] instanceof MoneyMarket) {
+//                System.out.println(accounts[i].toString());
+                result[i] = accounts[i].toString();
+            }
         }
         return result;
     }
+
+
+
+
 
 
 }
